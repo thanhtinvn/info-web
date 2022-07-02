@@ -1,0 +1,31 @@
+version: '3'
+services:
+    info_mysql:
+        image: mysql:8.0
+        container_name: "info_mysql"
+        ports:
+            - 33060:3306
+        expose:
+            - '3306'
+        command: [--default-authentication-plugin=mysql_native_password]
+        environment: 
+            MYSQL_USER: "infomysql"
+            MYSQL_PASSWORD: "info-mysql"
+            MYSQL_ROOT_PASSWORD: "info-123458"
+        volumes:
+            - ./mysql/data:/var/lib/mysql
+            - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    front_end:
+        build: ./frontend
+        container_name: "info_frontend"
+        ports:
+            - 4200:4200
+        volumes:
+            - ./frontend:/opt
+    back_end:
+        build: ./backend
+        container_name: "info_backend"
+        ports:
+            - 3000:3000
+        volumes:
+            - ./backend:/opt
